@@ -1,8 +1,8 @@
 A helper script to count the ratio of unique branching point values in
 [american fuzzy lop](http://lcamtuf.coredump.cx/afl/) instrumented
-programs. It is meant to give a quick overview if the amount of
-instrumentation in the program is likely too much to be effective when
-fuzzed with `afl-fuzz` command.
+programs. It is meant to give a quick overview if the binary likely
+has too much instrumentation for it to be effective when fuzzed with
+`afl-fuzz` command.
 
 ## Usage
 
