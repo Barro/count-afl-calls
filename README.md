@@ -84,3 +84,17 @@ bigger map to go through after each fuzzing iteration. This also
 requires that you compile american fuzzy lop yourself, which makes
 this only viable when you are willing to invest more than a quick look
 at fuzzing with american fuzzy lop.
+
+## License
+
+count-afl-calls is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 3 as
+published by the Free Software Foundation.
+
+count-afl-calls is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+A copy of GNU General Public License version 3 can be found from file
+[COPYING](COPYING).
