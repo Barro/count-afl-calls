@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! which wc &>/dev/null \
+        || ! which sort &>/dev/null \
+        || ! which grep &>/dev/null \
+        || ! which objdump &>/dev/null; then
+    echo >&2 "error: not all required commands (grep, objdump, sort, wc) were available!"
+    echo >&2 "  You need to install GNU coreutils and GNU binutils!"
+    exit 1
+fi
+
+if [[ $# -ne 1 ]]; then
+    echo >&2 "Usage: $0 program-filename"
+    echo >&2
+    echo >&2 "This program calculates the number branch points that have"\
+             "afl-fuzz instrumentation built in them"
+    exit 1
+fi
+
+FILE=$1
+
+if [[ ! -e "$FILE" ]]; then
+    echo >&2 "error: input $FILE does not exist!"
+    exit 1
+fi
+
+calls=$(objdump -d "$FILE" \
+            | grep -EB 1 "call.+<__afl_maybe_log" \
+            | grep -oE "mov.+" \
+            | LC_ALL=C sort || :)
+if [[ -z "$calls" ]]; then
+    echo >&2 "error: no afl instrumentation detected from binary $FILE."
+    echo >&2 "  It can be that this program is not compiled with afl compiler"\
+             "wrapper or that the binary is stripped."
+    exit 1
+fi
+
+total=$(wc -l <<< "$calls")
+echo "Total: $total"
+unique=$(uniq <<< "$calls" | wc -l)
+echo "Unique: $unique"
+repeating=$(uniq -d <<< "$calls" | wc -l)
+echo "Repeating: $repeating"
+
+# This is just some heuristics to estimate that if the instrumented
+# program is too big to be fuzzed efficiently. The number 4 has been
+# selected by a Stetson-Harrison method.
+if [[ repeating -gt 0 ]] \
+       && [[ "$total" -gt 1000 ]] \
+       && [[ "$(( unique / repeating ))" -lt 4 ]]; then
+    echo >&2 "warning: low ratio ($(( unique / repeating )) < 4) of unique to repeating calls"
+    echo >&2 "  You may want to divide your program into smaller fuzz targets,"\
+        "experiment with AFL_INST_RATIO environmental variable, and changing"\
+        "the MAP_SIZE value to a bigger one at afl's config.h file."
+fi
