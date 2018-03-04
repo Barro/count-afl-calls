@@ -66,7 +66,7 @@ be done by looking at the *map coverage* section of
 American fuzzy lop provides two approaches to reduce the probability
 of collisions in the compiled program; `AFL_INST_RATIO` environmental
 variable at runtime and american fuzzy lop's
-[`MAP_SIZE` value](https://github.com/mirrorer/afl/blob/master/config.h#L310)
+[`MAP_SIZE` value](https://github.com/mirrorer/afl/blob/2fb5a3482ec27b593c57258baae7089ebdc89043/config.h#L310)
 at compilation time.
 
 Changing the value of `AFL_INST_RATIO` makes the program to have
