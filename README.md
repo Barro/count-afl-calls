@@ -60,7 +60,7 @@ into more effective fuzzing of both parts. This script can result in
 warnings about big binaries especially in programs that do many types
 and formats of media processing in the same binary. These may or may
 not be detrimental for fuzzing efficiency and the final verdict should
-be done by looking at the `map coverage` section of
+be done by looking at the *map coverage* section of
 [afl-fuzz status screen](http://lcamtuf.coredump.cx/afl/status_screen.txt).
 
 American fuzzy lop provides two approaches to reduce the probability
